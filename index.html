@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="src/index.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-    <noscript>Please enable your browser JavaScript</noscript>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="app"></div>
+        <noscript>Please enable your browser JavaScript</noscript>
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="/src/utils/require.js"></script>
+        <script>
+            require.register("$", [], () => jQuery);
+        </script>
+        <script src="/src/components/button.js"></script>
+        <script src="/src/components/chessBox.js"></script>
+        <script src="/src/components/figure.js"></script>
+        <script src="/src/components//figures/pawn.js"></script>
+        <script src="/src/components//figures/rook.js"></script>
+        <script src="/src/components//figures/figures.js"></script>
+        <script src="/src/components/board.js"></script>
+        <script src="/src/index.js"></script>
+    </body>
 </html>
