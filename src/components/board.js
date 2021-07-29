@@ -1,7 +1,7 @@
 require.register(
     "Board",
-    ["$", "ChessBox", "Figures"],
-    ($, ChessBox, Figures) => {
+    ["$", "State", "ChessBox", "Figures"],
+    ($, State, ChessBox, { Pawn, Rook }) => {
         function createCurrentBox(x, y, colorToggle) {
             const currentBox = Object.create(ChessBox);
             currentBox.init(x, y, colorToggle ? "white" : "black"); // the OOLE approach
@@ -10,11 +10,11 @@ require.register(
 
         function createFigure(x, y, colorToggle) {
             if (x === 1) {
-                return new Figures.Pawn(x, y);
+                return new Pawn(x, y);
             }
 
             if (x === 0 && (y === 0 || y === 7)) {
-                return new Figures.Rook(x, y);
+                return new Rook(x, y);
             }
 
             return null;
@@ -24,11 +24,11 @@ require.register(
             init(size, elementId) {
                 this.size = size;
                 this.elementId = elementId;
-                this.state = {};
                 this.$elem = $(`<div id=${this.elementId}>`);
             },
             render($where) {
                 let colorToggle = true;
+                State.board = {};
 
                 for (let i = 0; i < this.size; i += 1) {
                     const $currentRow = $("<div class='row'>");
@@ -45,7 +45,7 @@ require.register(
                         colorToggle = !colorToggle;
                     }
 
-                    this.state[`row-${i}`] = row;
+                    State.board[`row-${i}`] = row;
                     this.$elem.append($currentRow);
                     colorToggle = !colorToggle;
                 }
