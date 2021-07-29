@@ -8,10 +8,7 @@ require.register("ChessBox", ["$"], ($) => {
                 `<div id="${this.x}-${this.y}" class="box ${this.color}">`
             );
         },
-        onClick(e) {
-            console.log(e);
-            console.log(this.x, this.y);
-        },
+        onClick(e) {},
         render($where) {
             this.$elem.click(this.onClick.bind(this));
             $where.append(this.$elem);

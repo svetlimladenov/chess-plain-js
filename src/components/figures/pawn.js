@@ -7,6 +7,7 @@ require.register("Pawn", ["Figure"], (Figure) => {
 
     Pawn.prototype.move = function move(direction) {
         this.x += 1;
+        console.log("mooving a pawn");
     };
 
     return Pawn;
