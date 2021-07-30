@@ -23,9 +23,6 @@ require.register("ObjectComponent", [], () => {
         setElement($element) {
             this.$element = $element;
         },
-        setParentElement($parent) {
-            this.$parent = $parent;
-        },
         render($where) {
             this.$parent = $where;
             if (this.$element) {

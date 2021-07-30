@@ -52,7 +52,8 @@ require.register(
                     });
                 });
                 this.board = event.detail.board;
-                this.render(this.$parentElement);
+                this.$element.empty();
+                this.build(this.$parent);
             });
         }
 
@@ -67,8 +68,6 @@ require.register(
         };
 
         Board.build = function build($parentElement) {
-            this.setParentElement($parentElement);
-
             Object.keys(this.board).forEach((row) => {
                 const $currentRow = $("<div class='row'>");
                 this.board[row].forEach((box) => {

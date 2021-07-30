@@ -4,6 +4,10 @@ require.register(
     ($, ObjectComponent, State, Rook) => {
         const ChessBox = Object.create(ObjectComponent); // ChessBox is an empty object now {}, with ObjetComponents being its [[Prototype]]
 
+        function getFigure(x, y) {
+            return this[`row-${x}`][y].figure;
+        }
+
         ChessBox.setup = function setup(x, y, color) {
             this.x = x;
             this.y = y;
@@ -15,6 +19,18 @@ require.register(
         };
 
         ChessBox.onClick = function onClick(e) {
+            console.log(this.x, this.y);
+            const possiblePositionY = this.y;
+            const possiblePositionX = this.x + 1;
+
+            const currentFigure = getFigure.call(State.board, this.x, this.y);
+            if (currentFigure) {
+                State.board[`row-${possiblePositionX}`][
+                    possiblePositionY
+                ].figure = currentFigure;
+                // console.log(pawnNext);
+            }
+
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {
                 detail: {
                     board: State.board
@@ -29,7 +45,6 @@ require.register(
         };
 
         ChessBox.build = function build($parentElement) {
-            this.setParentElement($parentElement);
             this.$element.click(this.onClick.bind(this));
             if (this.figure) {
                 this.figure.render(this.$element);
