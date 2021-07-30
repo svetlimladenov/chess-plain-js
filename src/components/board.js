@@ -1,20 +1,39 @@
 require.register(
     "Board",
     ["$", "State", "ObjectComponent", "ChessBox", "Figures"],
-    ($, State, ObjectComponent, ChessBox, { Pawn, Rook }) => {
+    ($, State, ObjectComponent, ChessBox, Figures) => {
         function createCurrentBox(x, y, colorToggle) {
             const currentBox = Object.create(ChessBox); // currentBox is an empty object, with [[Prototype]] - ChessBox - [[Prototype]] - ObjectComponent
             currentBox.setup(x, y, colorToggle ? "white" : "black"); // the OLOO approach
             return currentBox;
         }
 
-        function createFigure(x, y, colorToggle) {
+        function createFigure(x, y) {
+            const figureColors = {
+                BLACK: "black",
+                WHITE: "white"
+            };
+
+            Object.freeze(figureColors);
+
             if (x === 1) {
-                return new Pawn(x, y);
+                return new Figures.Pawn(x, y, figureColors.BLACK);
             }
 
             if (x === 0 && (y === 0 || y === 7)) {
-                return new Rook(x, y);
+                return new Figures.Rook(x, y, figureColors.BLACK);
+            }
+
+            if (x === 0 && (y === 2 || y === 5)) {
+                return new Figures.Bishop(x, y, figureColors.BLACK);
+            }
+
+            if (x === 0 && (y === 1 || y === 6)) {
+                return new Figures.Knight(x, y, figureColors.BLACK);
+            }
+
+            if (x === 6) {
+                return new Figures.Pawn(x, y, figureColors.WHITE);
             }
 
             return null;
@@ -27,7 +46,7 @@ require.register(
                 const row = [];
                 for (let j = 0; j < this.size; j += 1) {
                     const currentBox = createCurrentBox(i, j, colorToggle);
-                    const figure = createFigure(i, j, colorToggle);
+                    const figure = createFigure(i, j);
                     if (figure) {
                         currentBox.setFigure(figure);
                     }

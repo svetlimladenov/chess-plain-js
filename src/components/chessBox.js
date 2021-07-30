@@ -19,7 +19,6 @@ require.register(
         };
 
         ChessBox.onClick = function onClick(e) {
-            console.log(this.x, this.y);
             const possiblePositionY = this.y;
             const possiblePositionX = this.x + 1;
 
@@ -28,7 +27,6 @@ require.register(
                 State.board[`row-${possiblePositionX}`][
                     possiblePositionY
                 ].figure = currentFigure;
-                // console.log(pawnNext);
             }
 
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {

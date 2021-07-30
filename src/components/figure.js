@@ -1,13 +1,17 @@
 /* eslint-disable max-len */
 require.register("Figure", ["$", "Component"], ($, Component) => {
-    function Figure(x, y, name, imageSource) {
+    function Figure(x, y, name, imageSource, color) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.imageSource = imageSource;
-        this.$element = $(`<div class="figure-wrapper">
-                <img class="figure ${this.name}" src="${this.imageSource}" alt="${this.name}"/>
-            </div>`);
+        this.color = color;
+        Component.prototype.setElement.call(
+            this,
+            $(`<div class="figure-wrapper">
+                <img class="figure ${this.name}" src="${this.imageSource}-${this.color}.png" alt="${this.name}"/>
+            </div>`)
+        );
     }
 
     Figure.prototype = Object.create(Component.prototype);

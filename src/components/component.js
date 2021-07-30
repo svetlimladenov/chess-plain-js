@@ -11,6 +11,10 @@ require.register("Component", [], () => {
         }
     };
 
+    Component.prototype.setElement = function setElement($element) {
+        this.$element = $element;
+    };
+
     return Component;
 });
 
