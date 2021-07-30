@@ -4,7 +4,7 @@ require.register(
     ($, State, ChessBox, { Pawn, Rook }) => {
         function createCurrentBox(x, y, colorToggle) {
             const currentBox = Object.create(ChessBox);
-            currentBox.init(x, y, colorToggle ? "white" : "black"); // the OOLE approach
+            currentBox.init(x, y, colorToggle ? "white" : "black"); // the OLOO approach
             return currentBox;
         }
 
@@ -20,35 +20,42 @@ require.register(
             return null;
         }
 
+        function createBoard() {
+            const board = {};
+            let colorToggle = true;
+            for (let i = 0; i < this.size; i += 1) {
+                const row = [];
+                for (let j = 0; j < this.size; j += 1) {
+                    const currentBox = createCurrentBox(i, j, colorToggle);
+                    const figure = createFigure(i, j, colorToggle);
+                    if (figure) {
+                        currentBox.figure = figure;
+                    }
+                    row.push(currentBox);
+                    colorToggle = !colorToggle;
+                }
+
+                board[`row-${i}`] = row;
+                colorToggle = !colorToggle;
+            }
+            return board;
+        }
+
         const Board = {
             init(size, elementId) {
                 this.size = size;
                 this.elementId = elementId;
                 this.$elem = $(`<div id=${this.elementId}>`);
+                this.board = createBoard.call(this);
             },
             render($where) {
-                let colorToggle = true;
-                State.board = {};
-
-                for (let i = 0; i < this.size; i += 1) {
+                Object.keys(this.board).forEach((row) => {
                     const $currentRow = $("<div class='row'>");
-                    const row = [];
-                    for (let j = 0; j < this.size; j += 1) {
-                        const currentBox = createCurrentBox(i, j, colorToggle);
-                        const figure = createFigure(i, j, colorToggle);
-                        if (figure) {
-                            row.push(figure);
-                            figure.render(currentBox.$elem); // render the figure inside the box element
-                        }
-
-                        currentBox.render($currentRow);
-                        colorToggle = !colorToggle;
-                    }
-
-                    State.board[`row-${i}`] = row;
+                    this.board[row].forEach((col) => {
+                        col.render($currentRow);
+                    });
                     this.$elem.append($currentRow);
-                    colorToggle = !colorToggle;
-                }
+                });
 
                 $where.append(this.$elem);
             }

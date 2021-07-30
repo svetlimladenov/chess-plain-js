@@ -7,6 +7,7 @@ require.register("ChessBox", ["$", "State"], ($, State) => {
             this.$elem = $(
                 `<div id="${this.x}-${this.y}" class="box ${this.color}">`
             );
+            this.figure = null;
         },
         onClick(e) {
             const row = State.board[`row-${this.x}`];
@@ -25,6 +26,9 @@ require.register("ChessBox", ["$", "State"], ($, State) => {
         },
         render($where) {
             this.$elem.click(this.onClick.bind(this));
+            if (this.figure) {
+                this.figure.render(this.$elem);
+            }
             $where.append(this.$elem);
         }
     };
