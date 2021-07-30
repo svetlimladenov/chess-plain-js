@@ -14,5 +14,7 @@ require.register("Figure", ["$"], ($) => {
         this.$elem = $where.append(this.$elem);
     };
 
+    Figure.prototype.move = function move(direction) {};
+
     return Figure;
 });

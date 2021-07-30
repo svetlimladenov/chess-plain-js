@@ -1,4 +1,6 @@
 require.register("State", [], () => {
-    let state = {};
-    return {};
+    let state = {
+        board: {}
+    };
+    return state;
 });

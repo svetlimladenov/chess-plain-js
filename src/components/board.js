@@ -38,8 +38,23 @@ require.register(
                 board[`row-${i}`] = row;
                 colorToggle = !colorToggle;
             }
+            State.board = board;
             return board;
         }
+
+        const attachRerenderHandler = function attachRerenderHandler() {
+            document.addEventListener("rerenderBoard", (event) => {
+                console.log(event.detail.board);
+                console.log("rerendering!");
+                Object.keys(this.board).forEach((row) => {
+                    this.board[row].forEach((box) => {
+                        box.$elem.unbind();
+                    });
+                });
+                this.board = event.detail.board;
+                this.render(this.$where);
+            });
+        };
 
         const Board = {
             init(size, elementId) {
@@ -47,8 +62,11 @@ require.register(
                 this.elementId = elementId;
                 this.$elem = $(`<div id=${this.elementId}>`);
                 this.board = createBoard.call(this);
+                this.$where = null;
+                attachRerenderHandler.call(this);
             },
             render($where) {
+                this.$where = $where;
                 Object.keys(this.board).forEach((row) => {
                     const $currentRow = $("<div class='row'>");
                     this.board[row].forEach((col) => {
