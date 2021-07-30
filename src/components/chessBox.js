@@ -1,35 +1,20 @@
-require.register("ChessBox", ["$", "State", "Rook"], ($, State, Rook) => {
-    const ChessBox = {
-        init(x, y, color) {
+require.register(
+    "ChessBox",
+    ["$", "ObjectComponent", "State", "Rook"],
+    ($, ObjectComponent, State, Rook) => {
+        const ChessBox = Object.create(ObjectComponent); // ChessBox is an empty object now {}, with ObjetComponents being its [[Prototype]]
+
+        ChessBox.setup = function setup(x, y, color) {
             this.x = x;
             this.y = y;
             this.color = color;
-            this.$element = $(
-                `<div id="${this.x}-${this.y}" class="box ${this.color}">`
-            );
-            this.$parentElement = null;
+            this.setElement(
+                $(`<div id="${this.x}-${this.y}" class="box ${this.color}">`)
+            ); // delegated call
             this.figure = null;
-        },
-        onClick(e) {
-            // const row = State.board[`row-${this.x}`];
-            // if (row) {
-            //     const figure = row.filter(
-            //         // eslint-disable-next-line prefer-arrow-callback
-            //         function filterIndex(el) {
-            //             return el.y === this.y;
-            //         }.bind(this) // Can be written as an arrow-function, but just wanted to exercise my skills for this bindings
-            //     );
+        };
 
-            //     if (figure.length) {
-            //         console.log(figure[0].move());
-            //     }
-            // }
-
-            State.board[`row-${this.x}`][this.y].figure = new Rook(
-                this.x,
-                this.y
-            );
-
+        ChessBox.onClick = function onClick(e) {
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {
                 detail: {
                     board: State.board
@@ -37,16 +22,21 @@ require.register("ChessBox", ["$", "State", "Rook"], ($, State, Rook) => {
             });
 
             document.dispatchEvent(rerenderBoardEvent);
-        },
-        render($parentElement) {
-            this.$parentElement = $parentElement;
+        };
+
+        ChessBox.setFigure = function setFigure(figure) {
+            this.figure = figure;
+        };
+
+        ChessBox.build = function build($parentElement) {
+            this.setParentElement($parentElement);
             this.$element.click(this.onClick.bind(this));
             if (this.figure) {
                 this.figure.render(this.$element);
             }
-            $parentElement.append(this.$element);
-        }
-    };
+            this.render($parentElement); // delegated call
+        };
 
-    return ChessBox;
-});
+        return ChessBox;
+    }
+);

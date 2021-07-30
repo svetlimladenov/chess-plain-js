@@ -1,10 +1,10 @@
 require.register(
     "Board",
-    ["$", "State", "ChessBox", "Figures"],
-    ($, State, ChessBox, { Pawn, Rook }) => {
+    ["$", "State", "ObjectComponent", "ChessBox", "Figures"],
+    ($, State, ObjectComponent, ChessBox, { Pawn, Rook }) => {
         function createCurrentBox(x, y, colorToggle) {
-            const currentBox = Object.create(ChessBox);
-            currentBox.init(x, y, colorToggle ? "white" : "black"); // the OLOO approach
+            const currentBox = Object.create(ChessBox); // currentBox is an empty object, with [[Prototype]] - ChessBox - [[Prototype]] - ObjectComponent
+            currentBox.setup(x, y, colorToggle ? "white" : "black"); // the OLOO approach
             return currentBox;
         }
 
@@ -29,7 +29,7 @@ require.register(
                     const currentBox = createCurrentBox(i, j, colorToggle);
                     const figure = createFigure(i, j, colorToggle);
                     if (figure) {
-                        currentBox.figure = figure;
+                        currentBox.setFigure(figure);
                     }
                     row.push(currentBox);
                     colorToggle = !colorToggle;
@@ -56,28 +56,28 @@ require.register(
             });
         }
 
-        const Board = {
-            init(size, elementId) {
-                this.size = size;
-                this.elementId = elementId;
-                this.board = createBoard.call(this);
-                this.$element = $(`<div id=${this.elementId}>`);
-                this.$parentElement = null;
-                attachRerenderHandler.call(this);
-            },
-            render($parentElement) {
-                this.$parentElement = $parentElement;
+        const Board = Object.create(ObjectComponent);
 
-                Object.keys(this.board).forEach((row) => {
-                    const $currentRow = $("<div class='row'>");
-                    this.board[row].forEach((box) => {
-                        box.render($currentRow);
-                    });
-                    this.$element.append($currentRow);
+        Board.setup = function setup(size, elementId) {
+            this.size = size;
+            this.elementId = elementId;
+            this.board = createBoard.call(this);
+            this.setElement($(`<div id=${this.elementId}>`));
+            attachRerenderHandler.call(this);
+        };
+
+        Board.build = function build($parentElement) {
+            this.setParentElement($parentElement);
+
+            Object.keys(this.board).forEach((row) => {
+                const $currentRow = $("<div class='row'>");
+                this.board[row].forEach((box) => {
+                    box.build($currentRow);
                 });
+                this.$element.append($currentRow);
+            });
 
-                $parentElement.append(this.$element);
-            }
+            this.render($parentElement);
         };
 
         return Board;
