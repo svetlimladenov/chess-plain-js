@@ -4,9 +4,10 @@ require.register("ChessBox", ["$", "State", "Rook"], ($, State, Rook) => {
             this.x = x;
             this.y = y;
             this.color = color;
-            this.$elem = $(
+            this.$element = $(
                 `<div id="${this.x}-${this.y}" class="box ${this.color}">`
             );
+            this.$parentElement = null;
             this.figure = null;
         },
         onClick(e) {
@@ -37,12 +38,13 @@ require.register("ChessBox", ["$", "State", "Rook"], ($, State, Rook) => {
 
             document.dispatchEvent(rerenderBoardEvent);
         },
-        render($where) {
-            this.$elem.click(this.onClick.bind(this));
+        render($parentElement) {
+            this.$parentElement = $parentElement;
+            this.$element.click(this.onClick.bind(this));
             if (this.figure) {
-                this.figure.render(this.$elem);
+                this.figure.render(this.$element);
             }
-            $where.append(this.$elem);
+            $parentElement.append(this.$element);
         }
     };
 

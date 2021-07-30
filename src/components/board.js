@@ -42,40 +42,41 @@ require.register(
             return board;
         }
 
-        const attachRerenderHandler = function attachRerenderHandler() {
+        function attachRerenderHandler() {
             document.addEventListener("rerenderBoard", (event) => {
                 console.log(event.detail.board);
                 console.log("rerendering!");
                 Object.keys(this.board).forEach((row) => {
                     this.board[row].forEach((box) => {
-                        box.$elem.unbind();
+                        box.$element.unbind();
                     });
                 });
                 this.board = event.detail.board;
-                this.render(this.$where);
+                this.render(this.$parentElement);
             });
-        };
+        }
 
         const Board = {
             init(size, elementId) {
                 this.size = size;
                 this.elementId = elementId;
-                this.$elem = $(`<div id=${this.elementId}>`);
                 this.board = createBoard.call(this);
-                this.$where = null;
+                this.$element = $(`<div id=${this.elementId}>`);
+                this.$parentElement = null;
                 attachRerenderHandler.call(this);
             },
-            render($where) {
-                this.$where = $where;
+            render($parentElement) {
+                this.$parentElement = $parentElement;
+
                 Object.keys(this.board).forEach((row) => {
                     const $currentRow = $("<div class='row'>");
-                    this.board[row].forEach((col) => {
-                        col.render($currentRow);
+                    this.board[row].forEach((box) => {
+                        box.render($currentRow);
                     });
-                    this.$elem.append($currentRow);
+                    this.$element.append($currentRow);
                 });
 
-                $where.append(this.$elem);
+                $parentElement.append(this.$element);
             }
         };
 
