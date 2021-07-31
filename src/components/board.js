@@ -2,6 +2,9 @@ require.register(
     "Board",
     ["$", "State", "ObjectComponent", "ChessBox", "Figures"],
     ($, State, ObjectComponent, ChessBox, Figures) => {
+        // inside this arrow function, 'this' will be bound to the windows object (lexical scope),
+        // so if we create other arrow functions in here, their 'this' will also be bound to the windows object
+
         function createCurrentBox(x, y, colorToggle) {
             const currentBox = Object.create(ChessBox); // currentBox is an empty object, with [[Prototype]] - ChessBox - [[Prototype]] - ObjectComponent
             currentBox.setup(x, y, colorToggle ? "white" : "black"); // the OLOO approach
@@ -76,6 +79,11 @@ require.register(
             });
         }
 
+        const arrow = () => {
+            // when you see an arrow function, chech the lexical scope, and check what its 'this' binding will be;
+            console.log(this);
+        };
+
         const Board = Object.create(ObjectComponent);
 
         Board.setup = function setup(size, elementId) {
@@ -84,6 +92,7 @@ require.register(
             this.board = createBoard.call(this);
             this.setElement($(`<div id=${this.elementId}>`));
             attachRerenderHandler.call(this);
+            arrow();
         };
 
         Board.build = function build($parentElement) {

@@ -5,10 +5,16 @@ require.register("Component", [], () => {
     }
 
     Component.prototype.render = function render($where) {
-        this.$parent = $where;
-        if (this.$element) {
-            this.$parent.append(this.$element);
+        if (!$where) {
+            throw new Error("No render parent element spicified");
         }
+
+        if (!this.$element) {
+            throw new Error("No element created for display");
+        }
+
+        this.$parent = $where;
+        this.$parent.append(this.$element);
     };
 
     Component.prototype.setElement = function setElement($element) {
@@ -28,10 +34,16 @@ require.register("ObjectComponent", [], () => {
             this.$element = $element;
         },
         render($where) {
-            this.$parent = $where;
-            if (this.$element) {
-                this.$parent.append(this.$element);
+            if (!$where) {
+                throw new Error("No render parent element spicified");
             }
+
+            if (!this.$element) {
+                throw new Error("No element created for display");
+            }
+
+            this.$parent = $where;
+            this.$parent.append(this.$element);
         }
     };
 
