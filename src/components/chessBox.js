@@ -19,14 +19,19 @@ require.register(
         };
 
         ChessBox.onClick = function onClick(e) {
-            const possiblePositionY = this.y;
-            const possiblePositionX = this.x + 1;
-
             const currentFigure = getFigure.call(State.board, this.x, this.y);
+
             if (currentFigure) {
-                State.board[`row-${possiblePositionX}`][
-                    possiblePositionY
-                ].figure = currentFigure;
+                const possibleMoves = currentFigure.getPossibleMove();
+                const firstMove = possibleMoves[0];
+
+                State.board[`row-${currentFigure.x}`][currentFigure.y].figure =
+                    null;
+
+                currentFigure.move(firstMove.x, firstMove.y);
+
+                State.board[`row-${firstMove.x}`][firstMove.y].figure =
+                    currentFigure;
             }
 
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {

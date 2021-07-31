@@ -1,7 +1,7 @@
 require.register(
     "Board",
-    ["$", "State", "ObjectComponent", "ChessBox", "Figures"],
-    ($, State, ObjectComponent, ChessBox, Figures) => {
+    ["$", "State", "ObjectComponent", "ChessBox", "Figures", "FigureColors"],
+    ($, State, ObjectComponent, ChessBox, Figures, FigureColors) => {
         // inside this arrow function, 'this' will be bound to the windows object (lexical scope),
         // so if we create other arrow functions in here, their 'this' will also be bound to the windows object
 
@@ -12,31 +12,24 @@ require.register(
         }
 
         function createFigure(x, y) {
-            const figureColors = {
-                BLACK: "black",
-                WHITE: "white"
-            };
-
-            Object.freeze(figureColors);
-
             if (x === 1) {
-                return new Figures.Pawn(x, y, figureColors.BLACK);
+                return new Figures.Pawn(x, y, FigureColors.BLACK);
             }
 
             if (x === 0 && (y === 0 || y === 7)) {
-                return new Figures.Rook(x, y, figureColors.BLACK);
+                return new Figures.Rook(x, y, FigureColors.BLACK);
             }
 
             if (x === 0 && (y === 2 || y === 5)) {
-                return new Figures.Bishop(x, y, figureColors.BLACK);
+                return new Figures.Bishop(x, y, FigureColors.BLACK);
             }
 
             if (x === 0 && (y === 1 || y === 6)) {
-                return new Figures.Knight(x, y, figureColors.BLACK);
+                return new Figures.Knight(x, y, FigureColors.BLACK);
             }
 
             if (x === 6) {
-                return new Figures.Pawn(x, y, figureColors.WHITE);
+                return new Figures.Pawn(x, y, FigureColors.WHITE);
             }
 
             return null;
