@@ -25,3 +25,11 @@
     width: 75px;
     height: 75px;
 }
+
+.play {
+    margin: 15px 15px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: cadetblue;
+}

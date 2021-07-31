@@ -1,12 +1,8 @@
 require.register(
     "ChessBox",
-    ["$", "ObjectComponent", "State", "Rook"],
-    ($, ObjectComponent, State, Rook) => {
+    ["$", "ObjectComponent", "State", "Play"],
+    ($, ObjectComponent, State, Play) => {
         const ChessBox = Object.create(ObjectComponent); // ChessBox is an empty object now {}, with ObjetComponents being its [[Prototype]]
-
-        function getFigure(x, y) {
-            return this[`row-${x}`][y].figure;
-        }
 
         ChessBox.setup = function setup(x, y, color) {
             this.x = x;
@@ -16,22 +12,35 @@ require.register(
                 $(`<div id="${this.x}-${this.y}" class="box ${this.color}">`)
             ); // delegated call
             this.figure = null;
+            this.play = null;
         };
 
         ChessBox.onClick = function onClick(e) {
-            const currentFigure = getFigure.call(State.board, this.x, this.y);
+            // eslint-disable-next-line prefer-destructuring
+            const { play, figure } = this;
 
-            if (currentFigure) {
-                const possibleMoves = currentFigure.getPossibleMove();
+            if (figure) {
+                const possibleMoves = figure.getPossibleMove();
                 const firstMove = possibleMoves[0];
+                const newPlay = Object.create(Play);
+                newPlay.setup(figure);
+                newPlay.attach(
+                    State.board[`row-${firstMove.x}`][firstMove.y].$element
+                ); // attach the new play box, to the corrent box
+                State.board[`row-${firstMove.x}`][firstMove.y].play = newPlay;
+            }
 
-                State.board[`row-${currentFigure.x}`][currentFigure.y].figure =
+            if (play) {
+                const playedFigure = play.figure;
+                State.board[`row-${playedFigure.x}`][playedFigure.y].figure =
                     null;
+                play.figure.move(this.x, this.y);
 
-                currentFigure.move(firstMove.x, firstMove.y);
+                this.$element.empty();
+                play.figure.render(this.$element);
 
-                State.board[`row-${firstMove.x}`][firstMove.y].figure =
-                    currentFigure;
+                State.board[`row-${this.x}`][this.y].figure = play.figure;
+                State.board[`row-${this.x}`][this.y].play = null;
             }
 
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {

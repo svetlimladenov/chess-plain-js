@@ -16,9 +16,7 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
             return [{ x: this.x + 1, y: this.y }];
         }
 
-        if (this.color === FigureColors.WHITE) {
-            return [{ x: this.x - 1, y: this.y }];
-        }
+        return [{ x: this.x - 1, y: this.y }];
     };
 
     return Pawn;
