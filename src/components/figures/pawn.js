@@ -5,18 +5,24 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
 
     Pawn.prototype = Object.create(Figure.prototype);
 
-    Pawn.prototype.move = function move(x, y) {
-        this.x = x;
-        this.y = y;
-        console.log("mooving a pawn");
-    };
-
-    Pawn.prototype.getPossibleMove = function getPossibleMove() {
+    Pawn.prototype.getPossibleMoves = function getPossibleMoves() {
         if (this.color === FigureColors.BLACK) {
-            return [{ x: this.x + 1, y: this.y }];
+            const moves = [];
+            if (this.x + 1 <= 7) {
+                moves.push({ x: this.x + 1, y: this.y });
+            }
+
+            if (this.x === 1) {
+                moves.push({ x: this.x + 2, y: this.y });
+            }
+
+            return moves;
         }
 
-        return [{ x: this.x - 1, y: this.y }];
+        return [
+            { x: this.x - 1, y: this.y },
+            { x: this.x - 2, y: this.y }
+        ];
     };
 
     return Pawn;

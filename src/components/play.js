@@ -10,5 +10,9 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
         this.render($where);
     };
 
+    Play.remove = function remove() {
+        this.$element.remove();
+    };
+
     return Play;
 });

@@ -12,5 +12,8 @@ require.register("Bishop", ["Figure"], (Figure) => {
 
     Bishop.prototype = Object.create(Figure.prototype);
 
+    Bishop.prototype.getPossibleMoves = function getPossibleMoves() {
+        return [{ x: this.x + 1, y: this.y + 1 }];
+    };
     return Bishop;
 });

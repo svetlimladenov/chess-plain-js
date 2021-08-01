@@ -15,32 +15,55 @@ require.register(
             this.play = null;
         };
 
+        function onFigureClick(figure, State) {
+            const possibleMoves = figure.getPossibleMoves();
+            const { availablePlays } = State;
+            possibleMoves.forEach((move) => {
+                const moveBox = State.board[`row-${move.x}`][move.y];
+                if (moveBox.figure && moveBox.figure.color === figure.color) {
+                    // you cant move to a place where you have a figure
+                    return;
+                }
+                const newPlay = Object.create(Play);
+                newPlay.setup(figure);
+                newPlay.attach(moveBox.$element); // attach the new play box, to the possible boxes
+                availablePlays.push(newPlay);
+                moveBox.play = newPlay;
+            });
+
+            if (possibleMoves.length) {
+                State.playSelected = true;
+            }
+        }
+
+        // For now will leave this as unpure functions
+        function onPlayClick(play, State) {
+            const playedFigure = play.figure;
+            State.board[`row-${playedFigure.x}`][playedFigure.y].figure = null; // remove the figure from the last position
+            play.figure.move(this.x, this.y);
+
+            // this.$element.empty();
+            // play.remove();
+            play.figure.render(this.$element); // render the figure in the current box
+
+            State.board[`row-${this.x}`][this.y].figure = play.figure;
+            State.board[`row-${this.x}`][this.y].play = null;
+            State.playSelected = false;
+
+            State.availablePlays.forEach((play) => {
+                play.remove();
+            });
+        }
+
         ChessBox.onClick = function onClick(e) {
-            // eslint-disable-next-line prefer-destructuring
             const { play, figure } = this;
 
             if (figure) {
-                const possibleMoves = figure.getPossibleMove();
-                const firstMove = possibleMoves[0];
-                const newPlay = Object.create(Play);
-                newPlay.setup(figure);
-                newPlay.attach(
-                    State.board[`row-${firstMove.x}`][firstMove.y].$element
-                ); // attach the new play box, to the corrent box
-                State.board[`row-${firstMove.x}`][firstMove.y].play = newPlay;
+                onFigureClick.call(this, figure, State);
             }
 
             if (play) {
-                const playedFigure = play.figure;
-                State.board[`row-${playedFigure.x}`][playedFigure.y].figure =
-                    null;
-                play.figure.move(this.x, this.y);
-
-                this.$element.empty();
-                play.figure.render(this.$element);
-
-                State.board[`row-${this.x}`][this.y].figure = play.figure;
-                State.board[`row-${this.x}`][this.y].play = null;
+                onPlayClick.call(this, play, State);
             }
 
             const rerenderBoardEvent = new CustomEvent("rerenderBoard", {

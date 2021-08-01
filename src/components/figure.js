@@ -16,7 +16,12 @@ require.register("Figure", ["$", "Component"], ($, Component) => {
 
     Figure.prototype = Object.create(Component.prototype);
 
-    Figure.prototype.getPossibleMove = function getPossibleMove() {
+    Figure.prototype.move = function move(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    Figure.prototype.getPossibleMoves = function getPossibleMoves() {
         if (this.color === "black") {
             return [{ x: this.x, y: this.y + 1 }];
         }

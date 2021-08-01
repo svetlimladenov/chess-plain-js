@@ -72,11 +72,6 @@ require.register(
             });
         }
 
-        const arrow = () => {
-            // when you see an arrow function, chech the lexical scope, and check what its 'this' binding will be;
-            console.log(this);
-        };
-
         const Board = Object.create(ObjectComponent);
 
         Board.setup = function setup(size, elementId) {
@@ -85,7 +80,6 @@ require.register(
             this.board = createBoard.call(this);
             this.setElement($(`<div id=${this.elementId}>`));
             attachRerenderHandler.call(this);
-            arrow();
         };
 
         Board.build = function build($parentElement) {
