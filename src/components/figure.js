@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-require.register("Figure", ["$", "Component"], ($, Component) => {
+require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
     function Figure(x, y, name, imageSource, color) {
         this.x = x;
         this.y = y;
@@ -27,6 +27,28 @@ require.register("Figure", ["$", "Component"], ($, Component) => {
         }
 
         return [{ x: this.x, y: this.y - 1 }];
+    };
+
+    Figure.prototype.onClick = function onClick(State) {
+        const possibleMoves = this.getPossibleMoves.call(this); // this will first find the specific figure method: E.g. Pawn.getPossibleMoves(..)
+
+        possibleMoves.forEach((move) => {
+            const moveBox = State.board[`row-${move.x}`][move.y];
+            if (moveBox.figure && moveBox.figure.color === this.color) {
+                // you cant move to a place where you have your own figure
+                return;
+            }
+
+            const newPlay = Object.create(Play);
+            newPlay.setup(this, move.x, move.y);
+            newPlay.attach(moveBox.$element); // attach the new play box, to the possible boxes
+            State.availablePlays.push(newPlay);
+            moveBox.play = newPlay;
+        });
+
+        if (possibleMoves.length) {
+            State.playSelected = true;
+        }
     };
 
     return Figure;
