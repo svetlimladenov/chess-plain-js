@@ -4,6 +4,16 @@ require.register(
     ($, ObjectComponent, State) => {
         const ChessBox = Object.create(ObjectComponent); // ChessBox is an empty object now {}, with ObjetComponents being its [[Prototype]]
 
+        function cleanAvailablePlays() {
+            if (State.availablePlays.length > 0) {
+                State.availablePlays.forEach((availablePlay) => {
+                    availablePlay.remove();
+                });
+
+                State.availablePlay = [];
+            }
+        }
+
         ChessBox.setup = function setup(x, y, color) {
             this.x = x;
             this.y = y;
@@ -15,9 +25,9 @@ require.register(
             this.play = null;
         };
 
-        ChessBox.onClick = function onClick(e) {
+        ChessBox.onClick = function onClick() {
             const { play, figure } = this;
-
+            cleanAvailablePlays(State);
             if (figure) {
                 figure.onClick(State);
             }
