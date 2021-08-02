@@ -57,21 +57,6 @@ require.register(
             return board;
         }
 
-        function attachRerenderHandler() {
-            document.addEventListener("rerenderBoard", (event) => {
-                console.log(event.detail.board);
-                console.log("rerendering!");
-                Object.keys(this.board).forEach((row) => {
-                    this.board[row].forEach((box) => {
-                        box.$element.unbind();
-                    });
-                });
-                this.board = event.detail.board;
-                this.$element.empty();
-                this.build(this.$parent);
-            });
-        }
-
         const Board = Object.create(ObjectComponent);
 
         Board.setup = function setup(size, elementId) {
@@ -79,7 +64,6 @@ require.register(
             this.elementId = elementId;
             this.board = createBoard.call(this);
             this.setElement($(`<div id=${this.elementId}>`));
-            attachRerenderHandler.call(this);
         };
 
         Board.build = function build($parentElement) {
