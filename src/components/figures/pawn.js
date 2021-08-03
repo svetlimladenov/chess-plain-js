@@ -5,9 +5,64 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
 
     Pawn.prototype = Object.create(Figure.prototype);
 
-    Pawn.prototype.getPossibleMoves = function getPossibleMoves() {
-        const moves = [];
+    function getBoxFigure(State, x, y) {
+        const box = State.board[`row-${x}`][y];
+        if (box.figure && box.figure.color !== this.color) {
+            return box.figure;
+        }
 
+        return false;
+    }
+
+    function getAttackMoves(State) {
+        const boardMaxLength = 7;
+        const attackMoves = [];
+        const leftAttackX = this.x + 1;
+        const leftAttackY = this.y + 1;
+        if (leftAttackX > boardMaxLength || leftAttackY > boardMaxLength) {
+            return attackMoves;
+        }
+        const leftAttackFigure = getBoxFigure.call(
+            this,
+            State,
+            leftAttackX,
+            leftAttackY
+        );
+
+        if (leftAttackFigure) {
+            attackMoves.push({
+                x: leftAttackX,
+                y: leftAttackY,
+                attackedFigure: leftAttackFigure
+            });
+        }
+
+        const rightAttackX = this.x + 1;
+        const rightAttackY = this.y - 1;
+        if (rightAttackY < 0 || rightAttackX > boardMaxLength) {
+            return attackMoves;
+        }
+
+        const rightAttackFigure = getBoxFigure.call(
+            this,
+            State,
+            rightAttackX,
+            rightAttackY
+        );
+
+        if (rightAttackFigure) {
+            attackMoves.push({
+                x: rightAttackX,
+                y: rightAttackY,
+                attackedFigure: rightAttackFigure
+            });
+        }
+
+        return attackMoves;
+    }
+
+    Pawn.prototype.getPossibleMoves = function getPossibleMoves(State) {
+        const moves = [];
         if (this.color === FigureColors.BLACK) {
             if (this.x + 1 <= 7) {
                 moves.push({ x: this.x + 1, y: this.y });
@@ -27,6 +82,9 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
                 moves.push({ x: this.x - 2, y: this.y });
             }
         }
+
+        const attackMoves = getAttackMoves.call(this, State, moves);
+        moves.push(...attackMoves);
 
         return moves;
     };
