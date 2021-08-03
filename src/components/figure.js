@@ -30,7 +30,7 @@ require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
     };
 
     Figure.prototype.onClick = function onClick(State) {
-        const possibleMoves = this.getPossibleMoves.call(this); // this will first find the specific figure method: E.g. Pawn.getPossibleMoves(..)
+        const possibleMoves = this.getPossibleMoves.call(this, State); // this will first find the specific figure method: E.g. Pawn.getPossibleMoves(..)
 
         possibleMoves.forEach((move) => {
             const moveBox = State.board[`row-${move.x}`][move.y];

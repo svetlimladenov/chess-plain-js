@@ -5,9 +5,5 @@ require.register("Rook", ["Figure"], (Figure) => {
 
     Rook.prototype = Object.create(Figure.prototype);
 
-    Rook.prototype.move = function move(direction) {
-        console.log("moving a rook");
-    };
-
     return Rook;
 });
