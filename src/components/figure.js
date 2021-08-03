@@ -34,13 +34,8 @@ require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
 
         possibleMoves.forEach((move) => {
             const moveBox = State.board[`row-${move.x}`][move.y];
-            if (moveBox.figure && moveBox.figure.color === this.color) {
-                // you cant move to a place where you have your own figure
-                return;
-            }
-
             const newPlay = Object.create(Play);
-            newPlay.setup(this, move.x, move.y);
+            newPlay.setup(this, move.x, move.y, move.attackedFigure);
             newPlay.attach(moveBox.$element); // attach the new play box, to the possible boxes
             State.availablePlays.push(newPlay);
             moveBox.play = newPlay;

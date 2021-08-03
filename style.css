@@ -22,6 +22,7 @@
 }
 
 .figure {
+    cursor: grab;
     width: 75px;
     height: 75px;
 }
@@ -32,6 +33,18 @@
     height: 30px;
     border-radius: 50%;
     background-color: cadetblue;
+}
+
+.attack-play {
+    position: relative;
+    top: -94px;
+    left: 6px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: cadetblue;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
 }
 
 .x-numbers {

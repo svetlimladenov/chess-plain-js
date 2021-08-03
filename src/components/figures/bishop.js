@@ -15,7 +15,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
     function boxHasFigure(State, x, y) {
         const box = State.board[`row-${x}`][y];
         if (box.figure) {
-            return true;
+            return box.figure;
         }
 
         return false;
@@ -31,7 +31,16 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure(State, xIndex, yIndex)) {
+            const figure = boxHasFigure.call(this, State, xIndex, yIndex);
+            if (figure) {
+                if (figure.color !== this.color) {
+                    console.log("a");
+                    moves.push({
+                        x: xIndex,
+                        y: yIndex,
+                        attackedFigure: figure
+                    });
+                }
                 break;
             }
 
@@ -51,7 +60,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure(State, xIndex, yIndex)) {
+            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
                 break;
             }
 
@@ -71,7 +80,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure(State, xIndex, yIndex)) {
+            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
                 break;
             }
 
@@ -91,7 +100,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure(State, xIndex, yIndex)) {
+            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
                 break;
             }
             moves.push({ x: this.x - idx, y: this.y + idx });

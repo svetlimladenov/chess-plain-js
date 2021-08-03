@@ -1,11 +1,15 @@
 require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
     const Play = Object.create(ObjectComponent);
 
-    Play.setup = function setup(figure, x, y) {
+    Play.setup = function setup(figure, x, y, attackedFigure = null) {
         this.figure = figure;
         this.x = x;
         this.y = y;
-        this.setElement($('<div class="play"></div>'));
+        if (attackedFigure) {
+            this.setElement($('<div class="attack-play"></div>'));
+        } else {
+            this.setElement($('<div class="play"></div>'));
+        }
     };
 
     Play.attach = function attach($where) {
