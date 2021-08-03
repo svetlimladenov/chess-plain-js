@@ -27,9 +27,9 @@
 }
 
 .play {
-    margin: 15px 15px;
-    width: 60px;
-    height: 60px;
+    margin: 35px 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: cadetblue;
 }
