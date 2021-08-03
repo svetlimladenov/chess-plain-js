@@ -1,8 +1,7 @@
 require.register("State", [], () => {
     let state = {
         board: {},
-        availablePlays: [],
-        playSelected: false
+        availablePlays: []
     };
     return state;
 });

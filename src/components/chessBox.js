@@ -10,7 +10,7 @@ require.register(
                     availablePlay.remove();
                 });
 
-                State.availablePlay = [];
+                State.availablePlays = [];
             }
         }
 

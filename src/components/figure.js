@@ -45,10 +45,6 @@ require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
             State.availablePlays.push(newPlay);
             moveBox.play = newPlay;
         });
-
-        if (possibleMoves.length) {
-            State.playSelected = true;
-        }
     };
 
     return Figure;

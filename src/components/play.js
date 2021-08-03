@@ -20,7 +20,6 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
         State.board[`row-${this.figure.x}`][this.figure.y].figure = null; // remove the figure from its last position
         State.board[`row-${this.x}`][this.y].figure = this.figure; // place the figure in the current box
         State.board[`row-${this.x}`][this.y].play = null; // remove the play from the current box
-        State.playSelected = false;
 
         this.figure.move(this.x, this.y);
         this.figure.render(this.$parent); // render the figure in the current box
