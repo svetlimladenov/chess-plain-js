@@ -5,6 +5,7 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
         this.figure = figure;
         this.x = x;
         this.y = y;
+        this.attackedFigure = attackedFigure;
         if (attackedFigure) {
             this.setElement($('<div class="attack-play"></div>'));
         } else {
@@ -21,6 +22,10 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
     };
 
     Play.onClick = function onClick(State) {
+        if (this.attackedFigure) {
+            this.attackedFigure.remove(State);
+        }
+
         State.board[`row-${this.figure.x}`][this.figure.y].figure = null; // remove the figure from its last position
         State.board[`row-${this.x}`][this.y].figure = this.figure; // place the figure in the current box
         State.board[`row-${this.x}`][this.y].play = null; // remove the play from the current box
@@ -31,6 +36,8 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
         State.availablePlays.forEach((play) => {
             play.remove();
         });
+
+        console.log(State);
     };
 
     return Play;

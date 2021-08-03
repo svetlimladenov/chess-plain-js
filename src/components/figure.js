@@ -21,6 +21,12 @@ require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
         this.y = y;
     };
 
+    Figure.prototype.remove = function remove(State) {
+        this.$element.remove();
+        State.board[`row-${this.x}`][this.y].figure = null;
+        State.removedFigures.push(this);
+    };
+
     Figure.prototype.getPossibleMoves = function getPossibleMoves() {
         if (this.color === "black") {
             return [{ x: this.x, y: this.y + 1 }];

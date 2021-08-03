@@ -12,7 +12,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
 
     Bishop.prototype = Object.create(Figure.prototype);
 
-    function boxHasFigure(State, x, y) {
+    function getBoxFigure(State, x, y) {
         const box = State.board[`row-${x}`][y];
         if (box.figure) {
             return box.figure;
@@ -21,26 +21,29 @@ require.register("Bishop", ["Figure"], (Figure) => {
         return false;
     }
 
+    function addAttackMove(figure, moves, xIndex, yIndex) {
+        if (figure.color !== this.color) {
+            moves.push({
+                x: xIndex,
+                y: yIndex,
+                attackedFigure: figure
+            });
+        }
+    }
+
     function getDownRightDiagonalMoves(State, boardMaxLenght) {
         const moves = [];
         let idx = 1;
-        for (let i = this.x; i < boardMaxLenght - 1; i += 1) {
+        for (let i = this.x; i < boardMaxLenght; i += 1) {
             const xIndex = this.x + idx;
             const yIndex = this.y + idx;
             if (xIndex > boardMaxLenght || yIndex > boardMaxLenght) {
                 break;
             }
 
-            const figure = boxHasFigure.call(this, State, xIndex, yIndex);
+            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
             if (figure) {
-                if (figure.color !== this.color) {
-                    console.log("a");
-                    moves.push({
-                        x: xIndex,
-                        y: yIndex,
-                        attackedFigure: figure
-                    });
-                }
+                addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
             }
 
@@ -53,14 +56,16 @@ require.register("Bishop", ["Figure"], (Figure) => {
     function getDownLeftDiagonalMoves(State, boardMaxLenght) {
         const moves = [];
         let idx = 1;
-        for (let i = this.x; i < boardMaxLenght - 1; i += 1) {
+        for (let i = this.x; i < boardMaxLenght; i += 1) {
             const xIndex = this.x + idx;
             const yIndex = this.y - idx;
             if (xIndex > boardMaxLenght || yIndex < 0) {
                 break;
             }
 
-            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
+            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            if (figure) {
+                addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
             }
 
@@ -80,7 +85,9 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
+            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            if (figure) {
+                addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
             }
 
@@ -100,9 +107,12 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            if (boxHasFigure.call(this, State, xIndex, yIndex)) {
+            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            if (figure) {
+                addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
             }
+
             moves.push({ x: this.x - idx, y: this.y + idx });
             idx += 1;
         }
