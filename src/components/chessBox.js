@@ -22,27 +22,27 @@ require.register(
                 $(`<div id="${this.x}-${this.y}" class="box ${this.color}">`)
             ); // delegated call
             this.figure = null;
-            this.play = null;
         };
 
         ChessBox.onClick = function onClick() {
-            const { play, figure } = this;
-            cleanAvailablePlays(State);
+            const { figure } = this;
+            const play = State.availablePlays.find(
+                (p) => p.x === this.x && p.y === this.y
+            );
+
             if (figure) {
+                cleanAvailablePlays(State);
                 figure.onClick(State);
             }
 
             if (play) {
                 play.onClick(State);
+                cleanAvailablePlays(State);
             }
         };
 
         ChessBox.setFigure = function setFigure(figure) {
             this.figure = figure;
-        };
-
-        ChessBox.setPlay = function setPlay(play) {
-            this.play = play;
         };
 
         ChessBox.build = function build($parentElement) {

@@ -36,8 +36,6 @@ require.register("Play", ["$", "ObjectComponent"], ($, ObjectComponent) => {
         State.availablePlays.forEach((play) => {
             play.remove();
         });
-
-        console.log(State);
     };
 
     return Play;

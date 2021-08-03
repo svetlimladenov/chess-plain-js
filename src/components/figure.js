@@ -44,7 +44,6 @@ require.register("Figure", ["$", "Component", "Play"], ($, Component, Play) => {
             newPlay.setup(this, move.x, move.y, move.attackedFigure);
             newPlay.attach(moveBox.$element); // attach the new play box, to the possible boxes
             State.availablePlays.push(newPlay);
-            moveBox.play = newPlay;
         });
     };
 
