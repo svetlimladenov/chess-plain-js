@@ -66,15 +66,31 @@ require.register(
             this.setElement($(`<div id=${this.elementId}>`));
         };
 
+        function createFilesRow() {
+            const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
+            const filesRow = $("<div class='row'>");
+            filesRow.append($("<div class='files-prefix-box'>"));
+            files.forEach((file) => {
+                filesRow.append($(`<div class="box">${file}</div>`));
+            });
+            return filesRow;
+        }
+
         Board.build = function build($parentElement) {
-            Object.keys(this.board).forEach((row) => {
+            Object.keys(this.board).forEach((row, idx) => {
                 const $currentRow = $("<div class='row'>");
+                $currentRow.append(
+                    $(`<div class='x-numbers'>${this.size - idx}</div>`)
+                );
                 this.board[row].forEach((box) => {
                     box.build($currentRow);
                 });
                 this.$element.append($currentRow);
             });
 
+            const filesRow = createFilesRow();
+
+            this.$element.append(filesRow);
             this.render($parentElement);
         };
 

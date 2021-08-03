@@ -33,3 +33,11 @@
     border-radius: 50%;
     background-color: cadetblue;
 }
+
+.x-numbers {
+    font-size: medium;
+}
+
+.files-prefix-box {
+    margin-left: 10px;
+}
