@@ -1,5 +1,10 @@
+import Event from "./Event.js";
+
 class ChessView {
-    // eslint-disable-next-line class-methods-use-this
+    constructor() {
+        this.playEvent = new Event();
+    }
+
     render(where) {
         const board = document.createElement("div");
 
@@ -14,6 +19,10 @@ class ChessView {
                     .map((_, idx) => {
                         const cell = document.createElement("div");
                         cell.className = "box";
+
+                        cell.addEventListener("click", (e) => {
+                            this.playEvent.trigger(e);
+                        });
 
                         let defaultColor = "white";
                         let secondaryColor = "black";

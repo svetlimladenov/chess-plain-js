@@ -4,6 +4,10 @@ import ChessView from "./ChessView.js";
 class ChessController {
     constructor() {
         this.view = new ChessView();
+        this.view.playEvent.addListener((e) => {
+            console.log("it works");
+            console.log(e);
+        });
     }
 
     start(where) {
