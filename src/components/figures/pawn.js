@@ -5,8 +5,8 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
 
     Pawn.prototype = Object.create(Figure.prototype);
 
-    function getBoxFigure(State, x, y) {
-        const box = State.board[`row-${x}`][y];
+    function getBoxFigure(board, x, y) {
+        const box = board[`row-${x}`][y];
         if (box.figure && box.figure.color !== this.color) {
             return box.figure;
         }
@@ -14,7 +14,7 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
         return false;
     }
 
-    function getAttackMoves(State) {
+    function getAttackMoves(board) {
         const boardMaxLength = 7;
         const attackMoves = [];
         const leftAttackX = this.x + 1;
@@ -24,7 +24,7 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
         }
         const leftAttackFigure = getBoxFigure.call(
             this,
-            State,
+            board,
             leftAttackX,
             leftAttackY
         );
@@ -45,7 +45,7 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
 
         const rightAttackFigure = getBoxFigure.call(
             this,
-            State,
+            board,
             rightAttackX,
             rightAttackY
         );
@@ -83,7 +83,7 @@ require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
             }
         }
 
-        const attackMoves = getAttackMoves.call(this, State, moves);
+        const attackMoves = getAttackMoves.call(this, State.board, moves);
         moves.push(...attackMoves);
 
         return moves;

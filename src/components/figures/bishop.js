@@ -12,8 +12,8 @@ require.register("Bishop", ["Figure"], (Figure) => {
 
     Bishop.prototype = Object.create(Figure.prototype);
 
-    function getBoxFigure(State, x, y) {
-        const box = State.board[`row-${x}`][y];
+    function getBoxFigure(board, x, y) {
+        const box = board[`row-${x}`][y];
         if (box.figure) {
             return box.figure;
         }
@@ -31,7 +31,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
         }
     }
 
-    function getDownRightDiagonalMoves(State, boardMaxLenght) {
+    function getDownRightDiagonalMoves(board, boardMaxLenght) {
         const moves = [];
         let idx = 1;
         for (let i = this.x; i < boardMaxLenght; i += 1) {
@@ -41,7 +41,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            const figure = getBoxFigure.call(this, board, xIndex, yIndex);
             if (figure) {
                 addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
@@ -53,7 +53,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
         return moves;
     }
 
-    function getDownLeftDiagonalMoves(State, boardMaxLenght) {
+    function getDownLeftDiagonalMoves(board, boardMaxLenght) {
         const moves = [];
         let idx = 1;
         for (let i = this.x; i < boardMaxLenght; i += 1) {
@@ -63,7 +63,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            const figure = getBoxFigure.call(this, board, xIndex, yIndex);
             if (figure) {
                 addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
@@ -75,7 +75,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
         return moves;
     }
 
-    function getUpLeftDiagonalMoves(State) {
+    function getUpLeftDiagonalMoves(board) {
         const moves = [];
         let idx = 1;
         for (let i = this.x; i > 0; i -= 1) {
@@ -85,7 +85,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            const figure = getBoxFigure.call(this, board, xIndex, yIndex);
             if (figure) {
                 addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
@@ -97,7 +97,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
         return moves;
     }
 
-    function getUpRightDiagonalMoves(State, boardMaxLenght) {
+    function getUpRightDiagonalMoves(board, boardMaxLenght) {
         const moves = [];
         let idx = 1;
         for (let i = this.x; i > 0; i -= 1) {
@@ -107,7 +107,7 @@ require.register("Bishop", ["Figure"], (Figure) => {
                 break;
             }
 
-            const figure = getBoxFigure.call(this, State, xIndex, yIndex);
+            const figure = getBoxFigure.call(this, board, xIndex, yIndex);
             if (figure) {
                 addAttackMove.call(this, figure, moves, xIndex, yIndex);
                 break;
@@ -123,21 +123,24 @@ require.register("Bishop", ["Figure"], (Figure) => {
         const boardMaxLenght = 7;
         const downRightDiagonalMoves = getDownRightDiagonalMoves.call(
             this,
-            State,
+            State.board,
             boardMaxLenght
         );
 
         const downLeftDiagonalMoves = getDownLeftDiagonalMoves.call(
             this,
-            State,
+            State.board,
             boardMaxLenght
         );
 
-        const upLeftDiagonalMoves = getUpLeftDiagonalMoves.call(this, State);
+        const upLeftDiagonalMoves = getUpLeftDiagonalMoves.call(
+            this,
+            State.board
+        );
 
         const upRightDiagonalMoves = getUpRightDiagonalMoves.call(
             this,
-            State,
+            State.board,
             boardMaxLenght
         );
 
