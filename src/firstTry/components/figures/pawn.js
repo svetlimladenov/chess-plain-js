@@ -1,6 +1,13 @@
 require.register("Pawn", ["Figure", "FigureColors"], (Figure, FigureColors) => {
     function Pawn(x, y, color) {
-        Figure.call(this, x, y, "pawn", "../public/images/figures/pawn", color);
+        Figure.call(
+            this,
+            x,
+            y,
+            "pawn",
+            "../../public/images/figures/pawn",
+            color
+        );
     }
 
     Pawn.prototype = Object.create(Figure.prototype);

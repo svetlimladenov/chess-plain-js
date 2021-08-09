@@ -5,7 +5,7 @@ require.register("Knight", ["Figure"], (Figure) => {
             x,
             y,
             "knight",
-            "../public/images/figures/knight",
+            "../../public/images/figures/knight",
             color
         );
     }
