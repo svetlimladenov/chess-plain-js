@@ -16,6 +16,7 @@
         "arrow-body-style": "off",
         "max-len": ["error", { "ignoreComments": true }],
         "wrap-iife": ["warn", "inside"],
-        "comma-dangle": ["error", "never"]
+        "comma-dangle": ["error", "never"],
+        "no-underscore-dangle": "off"
     }
 }
