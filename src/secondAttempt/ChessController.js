@@ -18,8 +18,8 @@ class ChessController {
             this.model.restart();
         });
 
-        this.model.showPossibleMovesEvent.addListener((data) => {
-            this.view.showPossibleMoves(data);
+        this.model.showPossibleMovesEvent.addListener((oldMoves, newMoves) => {
+            this.view.showPossibleMoves(oldMoves, newMoves);
         });
 
         this.model.figuresCreatedEvent.addListener((data) => {

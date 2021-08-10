@@ -117,9 +117,21 @@ class ChessView {
         });
     }
 
-    showPossibleMoves(data) {
-        console.log(this.cells[data.x][data.y]);
-        console.log(data);
+    showPossibleMoves(oldMoves, newMoves) {
+        this.emptyCells(oldMoves);
+
+        newMoves.forEach((move) => {
+            const playCircle = document.createElement("div");
+            playCircle.classList.add("play");
+            this.cells[move.y][move.x].appendChild(playCircle);
+        });
+    }
+
+    emptyCells(cellPositions) {
+        cellPositions.forEach((cellPosition) => {
+            const cell = this.cells[cellPosition.y][cellPosition.x];
+            cell.removeChild(cell.firstChild);
+        });
     }
 }
 

@@ -7,12 +7,13 @@ class Chess {
         this.figuresCreatedEvent = new Event();
 
         this._boards = [Chess.makeEmptyBoard()];
+        this.availableMoves = [];
         this.isStarted = false;
     }
 
     start() {
         if (this.isStarted) {
-            console.log("Game already started");
+            console.error("Game already started");
             return;
         }
 
@@ -26,17 +27,21 @@ class Chess {
     }
 
     cellClicked(position) {
-        const cell = this._getLatestBoard()[position.y][position.x];
-        console.log(cell);
-    }
-
-    static makeEmptyBoard() {
-        const board = Array(8).fill(Array(8).fill());
-        return board;
+        const cell = this._getCellItem(position);
+        if (cell) {
+            const newMoves = cell.getMoves(this._getLatestBoard());
+            const oldMoves = this.availableMoves;
+            this.showPossibleMovesEvent.trigger(oldMoves, newMoves);
+            this.availableMoves = newMoves;
+        }
     }
 
     _getLatestBoard() {
         return this._boards[this._boards.length - 1];
+    }
+
+    _getCellItem(position) {
+        return this._getLatestBoard()[position.y][position.x];
     }
 
     _updateBoard(newBoard) {
@@ -57,6 +62,11 @@ class Chess {
 
         this.figuresCreatedEvent.trigger(boardWithFigures);
         return boardWithFigures;
+    }
+
+    static makeEmptyBoard() {
+        const board = Array(8).fill(Array(8).fill());
+        return board;
     }
 }
 
