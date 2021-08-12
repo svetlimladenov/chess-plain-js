@@ -97,24 +97,29 @@ class ChessView {
         return controlls;
     }
 
-    appendFigures(data) {
+    renderFigures(data) {
         data.forEach((row, rowIdx) => {
             row.forEach((col, colIdx) => {
                 if (col) {
-                    const figureWrapper = document.createElement("div");
-                    figureWrapper.className = "figure-wrapper";
-
-                    const figureImage = document.createElement("img");
-                    figureImage.src = col.image;
-                    figureImage.classList.add("figure");
-                    figureImage.classList.add(col.name);
-
-                    figureWrapper.appendChild(figureImage);
-
+                    const figureWrapper = this.renderFigure(col);
                     this.cells[rowIdx][colIdx].appendChild(figureWrapper);
                 }
             });
         });
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    renderFigure(figure) {
+        const figureWrapper = document.createElement("div");
+        figureWrapper.className = "figure-wrapper";
+
+        const figureImage = document.createElement("img");
+        figureImage.src = figure.image;
+        figureImage.classList.add("figure");
+        figureImage.classList.add(figure.name);
+
+        figureWrapper.appendChild(figureImage);
+        return figureWrapper;
     }
 
     showPossibleMoves(oldMoves, newMoves) {
@@ -132,6 +137,12 @@ class ChessView {
             const cell = this.cells[cellPosition.y][cellPosition.x];
             cell.removeChild(cell.firstChild);
         });
+    }
+
+    moveFigure(figure, oldPosition) {
+        this.emptyCells(oldPosition);
+        const renderedFigure = this.renderFigure(figure);
+        this.cells[figure.y][figure.x].appendChild(renderedFigure);
     }
 }
 

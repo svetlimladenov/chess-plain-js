@@ -23,7 +23,11 @@ class ChessController {
         });
 
         this.model.figuresCreatedEvent.addListener((data) => {
-            this.view.appendFigures(data);
+            this.view.renderFigures(data);
+        });
+
+        this.model.moveFigureEvent.addListener((figure, oldPosition) => {
+            this.view.moveFigure(figure, oldPosition);
         });
     }
 
