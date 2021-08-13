@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import Button from "./Button.js";
+import store from "./store.js";
 
 class Chess {
     constructor(props) {
@@ -26,6 +27,11 @@ class Chess {
                     cell.classList.add(secondaryColor);
                 }
 
+                if (cur) {
+                    // if there is a figure
+                    cell.appendChild(cur.render());
+                }
+
                 acc.appendChild(cell);
                 return acc;
             }, document.createElement("div"));
@@ -50,8 +56,11 @@ class Chess {
     _createStartButton() {
         const args = {
             title: "Start",
-            onClick() {
-                console.log(this);
+            onClick(e) {
+                store.dispatch({
+                    type: "GAME_START",
+                    event: e
+                });
             }
         };
 
@@ -60,9 +69,12 @@ class Chess {
 
     _createRestartButton() {
         const args = {
-            title: "Restart",
-            onClick() {
-                console.log(this);
+            title: "Reset",
+            onClick(e) {
+                store.dispatch({
+                    type: "GAME_RESET",
+                    event: e
+                });
             }
         };
 

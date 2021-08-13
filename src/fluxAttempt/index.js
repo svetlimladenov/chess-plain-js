@@ -1,11 +1,19 @@
+import store from "./store.js";
 import Chess from "./Chess.js";
 
-const root = document.getElementById("root");
+store.dispatch({
+    type: "INIT"
+});
 
-const state = {
-    board: Array(8).fill(Array(8).fill(null))
-};
+function render() {
+    const state = store.getState();
+    const chess = new Chess(state);
+    const root = document.getElementById("root");
+    if (root.firstChild) {
+        root.removeChild(root.firstChild);
+    }
+    root.appendChild(chess.render());
+}
 
-const chess = new Chess(state);
-
-root.appendChild(chess.render());
+store.subscribe(render);
+render();
