@@ -46,6 +46,7 @@ const chessReducer = (state = {}, action) => {
             return updateObject(state, { board });
         }
         case "PLAY_CLICKED": {
+            console.log("play clicked action");
             return state;
         }
         default: {
