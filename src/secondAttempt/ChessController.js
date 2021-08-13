@@ -7,7 +7,9 @@ class ChessController {
         this.model = new Chess();
 
         this.view.cellClickedEvent.addListener((e) => {
-            this.model.cellClicked(e);
+            const { availableMoves, board } = this.model.cellClicked(e);
+            this.model.availableMoves = availableMoves;
+            this.model.board = board;
         });
 
         this.view.startEvent.addListener((data) => {

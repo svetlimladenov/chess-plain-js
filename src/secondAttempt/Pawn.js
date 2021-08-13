@@ -1,3 +1,5 @@
+import { Map, List } from "../../node_modules/immutable/dist/immutable.es.js";
+
 class Pawn {
     constructor(x, y) {
         this.x = x;
@@ -7,10 +9,10 @@ class Pawn {
     }
 
     getMoves(board) {
-        return [
-            { x: this.x, y: this.y + 1 },
-            { x: this.x, y: this.y + 2 }
-        ];
+        return List([
+            Map({ x: this.x, y: this.y + 1 }),
+            Map({ x: this.x, y: this.y + 2 })
+        ]);
     }
 }
 

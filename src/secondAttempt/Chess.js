@@ -8,8 +8,8 @@ class Chess {
         this.figuresCreatedEvent = new Event();
         this.moveFigureEvent = new Event();
 
-        this.immutableBoard = Chess.makeImmutableBoard();
-        this.availableMoves = { moves: [], figure: null };
+        this.board = Chess.makeBoardStore();
+        this.availableMoves = Chess.makeMovesStore();
         this.isStarted = false;
     }
 
@@ -19,13 +19,13 @@ class Chess {
             return;
         }
 
-        this.immutableBoard = this._addFigures();
+        this.board = this._addFigures();
         this.isStarted = true;
     }
 
     restart() {
         this.isStarted = false;
-        this.immutableBoard = Chess.makeImmutableBoard();
+        this.board = Chess.makeBoardStore();
     }
 
     cellClicked(position) {
@@ -33,9 +33,9 @@ class Chess {
         const playPositions = this._getPlay(position);
 
         if (playPositions) {
-            const playedFigure = this.availableMoves.figure;
+            const playedFigure = this.availableMoves.get("figure");
 
-            const updatedBoard = this.immutableBoard.map((row, rowIdx) => {
+            const updatedBoard = this.board.map((row, rowIdx) => {
                 return row.map((col, colIdx) => {
                     if (
                         rowIdx === playPositions.y &&
@@ -55,65 +55,77 @@ class Chess {
                 });
             });
 
-            this._updateBoard(updatedBoard);
-
             const oldPosition = {
                 x: playedFigure.x,
                 y: playedFigure.y
             };
 
-            this.availableMoves.figure.x = playPositions.x;
-            this.availableMoves.figure.y = playPositions.y;
+            this.availableMoves.figure.x = playPositions.x; // mutation to remove
+            this.availableMoves.figure.y = playPositions.y; // mutation to remove
 
             this.moveFigureEvent.trigger(
-                this.availableMoves.figure,
+                this.availableMoves.get("figure"),
                 this.availableMoves.moves.concat(oldPosition)
             );
 
-            this.availableMoves = { moves: [], figure: null };
+            return {
+                board: updatedBoard,
+                availableMoves: Chess.makeMovesStore()
+            };
         }
 
         if (cell) {
-            const newMoves = cell.getMoves(this.immutableBoard).slice(); // make a copy so we dont pass the real reference
-            const oldMoves = this.availableMoves.moves.slice(); // make a copy so we dont pass the real reference
+            const newMoves = cell.getMoves(this.board);
+            const oldMoves = this.availableMoves.get("moves");
             this.showPossibleMovesEvent.trigger(oldMoves, newMoves);
-            this.availableMoves.moves = newMoves;
-            this.availableMoves.figure = cell;
+            return {
+                availableMoves: this.availableMoves
+                    .set("moves", newMoves)
+                    .set("figure", cell),
+                board: this.board
+            };
         }
+
+        return {
+            availableMoves: this.availableMoves,
+            board: this.board
+        };
     }
 
     _getCellItem(position) {
-        return this.immutableBoard.get(position.y).get(position.x);
+        return this.board.get(position.y).get(position.x);
     }
 
     _getPlay(position) {
-        return this.availableMoves.moves.find(
-            (play) => play.x === position.x && play.y === position.y
-        );
-    }
-
-    _updateBoard(newBoard) {
-        this.immutableBoard = newBoard;
+        return this.availableMoves
+            .get("moves")
+            .find(
+                (play) =>
+                    play.get("x") === position.x && play.get("y") === position.y
+            );
     }
 
     _addFigures() {
-        const boardWithFigures = this.immutableBoard.map((row, rowIdx) => {
-            let newRow = row;
+        const boardWithFigures = this.board.map((row, rowIdx) => {
             if (rowIdx === 1) {
-                newRow = row.map((_, idx) => {
+                return row.map((_, idx) => {
                     return new Pawn(idx, rowIdx);
                 });
             }
 
-            return newRow;
+            return row;
         });
 
         this.figuresCreatedEvent.trigger(boardWithFigures);
         return boardWithFigures;
     }
 
-    static makeImmutableBoard() {
+    static makeBoardStore() {
         return List(Array(8).fill(List(Array(8).fill(null))));
+    }
+
+    static makeMovesStore() {
+        return Map({ moves: List(), figure: null });
     }
 }
 

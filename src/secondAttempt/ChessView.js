@@ -128,7 +128,7 @@ class ChessView {
         newMoves.forEach((move) => {
             const playCircle = document.createElement("div");
             playCircle.classList.add("play");
-            this.cells[move.y][move.x].appendChild(playCircle);
+            this.cells[move.get("y")][move.get("x")].appendChild(playCircle);
         });
     }
 
