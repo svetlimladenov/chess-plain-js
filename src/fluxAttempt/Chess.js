@@ -1,3 +1,6 @@
+/* eslint-disable class-methods-use-this */
+import Button from "./Button.js";
+
 class Chess {
     constructor(props) {
         this.props = props;
@@ -31,7 +34,39 @@ class Chess {
             prev.appendChild(row);
             return prev;
         }, document.createElement("div"));
-        return board;
+
+        const startButton = this._createStartButton();
+        const restartButton = this._createRestartButton();
+
+        const wrapper = document.createElement("div");
+
+        wrapper.appendChild(board);
+        wrapper.appendChild(startButton);
+        wrapper.appendChild(restartButton);
+
+        return wrapper;
+    }
+
+    _createStartButton() {
+        const args = {
+            title: "Start",
+            onClick() {
+                console.log(this);
+            }
+        };
+
+        return new Button(args).render();
+    }
+
+    _createRestartButton() {
+        const args = {
+            title: "Restart",
+            onClick() {
+                console.log(this);
+            }
+        };
+
+        return new Button(args).render();
     }
 }
 
