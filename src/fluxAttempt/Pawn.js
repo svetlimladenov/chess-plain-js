@@ -1,3 +1,5 @@
+import store from "./store.js";
+
 class Pawn {
     constructor(x, y) {
         this.x = x;
@@ -6,9 +8,24 @@ class Pawn {
         this.name = "pawn";
     }
 
+    getPlayPositions() {
+        store.dispatch({
+            type: "GET_PLAY_POSITIONS",
+            position: {
+                x: this.x,
+                y: this.y
+            }
+        });
+    }
+
     render() {
         const figureWrapper = document.createElement("div");
         figureWrapper.className = "figure-wrapper";
+
+        figureWrapper.addEventListener(
+            "click",
+            this.getPlayPositions.bind(this)
+        );
 
         const figureImage = document.createElement("img");
         figureImage.src = this.image;

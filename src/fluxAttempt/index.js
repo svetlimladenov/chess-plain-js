@@ -15,5 +15,5 @@ function render() {
     root.appendChild(chess.render());
 }
 
-store.subscribe(render);
+store.subscribe(render); // we rerender on every action, thats a problem which React solves, will not fix it here
 render();

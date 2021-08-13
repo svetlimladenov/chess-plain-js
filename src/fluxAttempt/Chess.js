@@ -28,7 +28,7 @@ class Chess {
                 }
 
                 if (cur) {
-                    // if there is a figure
+                    // if there is a figure or play
                     cell.appendChild(cur.render());
                 }
 

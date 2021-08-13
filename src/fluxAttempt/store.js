@@ -1,36 +1,4 @@
-import Pawn from "./Pawn.js";
-
-/* eslint-disable indent */
-// Reducer.
-const chessReducer = (state = {}, action) => {
-    switch (action.type) {
-        case "INIT": {
-            return {
-                board: Array(8).fill(Array(8).fill(null))
-            };
-        }
-        case "GAME_START": {
-            const boardWithFigures = state.board.map((row, rowIdx) => {
-                if (rowIdx === 1) {
-                    return row.map((_, idx) => {
-                        return new Pawn(idx, rowIdx);
-                    });
-                }
-
-                return row;
-            });
-            return { board: boardWithFigures };
-        }
-        case "GAME_RESET": {
-            return {
-                board: Array(8).fill(Array(8).fill(null))
-            };
-        }
-        default: {
-            return state;
-        }
-    }
-};
+import chessReducer from "./chess-reducer.js";
 
 // Store.
 const createStore = (reducer) => {
