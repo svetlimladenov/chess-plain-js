@@ -1,5 +1,5 @@
 import store from "./store.js";
-import Chess from "./Chess.js";
+import Chess from "./chess.js";
 
 store.dispatch({
     type: "INIT"
