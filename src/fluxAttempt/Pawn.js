@@ -8,13 +8,26 @@ class Pawn {
         this.name = "pawn";
     }
 
-    getPlayPositions() {
-        store.dispatch({
-            type: "GET_PLAY_POSITIONS",
-            position: {
+    showPlayablePositions() {
+        const state = store.getState(); // use the state to check if the positions is available for play
+
+        const playPositions = [];
+
+        playPositions.push({
+            x: this.x,
+            y: this.y + 1
+        });
+
+        if (this.y === 1) {
+            playPositions.push({
                 x: this.x,
-                y: this.y
-            }
+                y: this.y + 2
+            });
+        }
+
+        store.dispatch({
+            type: "SHOW_PLAYABLE_POSITIONS",
+            playPositions
         });
     }
 
@@ -24,7 +37,7 @@ class Pawn {
 
         figureWrapper.addEventListener(
             "click",
-            this.getPlayPositions.bind(this)
+            this.showPlayablePositions.bind(this)
         );
 
         const figureImage = document.createElement("img");

@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import { getDefaultCellValue } from "./board.js";
-import Play from "./Play.js";
 import { updateObject, updateItem } from "./utils.js";
 
 const chessReducer = (state = {}, action) => {
@@ -23,27 +22,26 @@ const chessReducer = (state = {}, action) => {
                 board: Array(8).fill(Array(8).fill(null))
             });
         }
-        case "GET_PLAY_POSITIONS": {
-            const updatedRow = updateItem(
-                state.board[action.position.y],
-                action.position.x,
-                {
-                    render() {
-                        return new Play(
-                            action.position.x,
-                            action.position.y
-                        ).render();
+        case "SHOW_PLAYABLE_POSITIONS": {
+            const boardWithPlays = state.board.map((row, rowIdx) => {
+                return row.map((col, colIdx) => {
+                    if (col === "PLAY") {
+                        return null;
                     }
-                }
-            );
 
-            const board = updateItem(
-                state.board,
-                action.position.y,
-                updatedRow
-            );
+                    const a = action.playPositions.find(
+                        (pos) => pos.x === colIdx && pos.y === rowIdx
+                    );
 
-            return updateObject(state, { board });
+                    if (a) {
+                        return "PLAY";
+                    }
+
+                    return col;
+                });
+            });
+
+            return updateObject(state, { board: boardWithPlays });
         }
         case "PLAY_CLICKED": {
             console.log("play clicked action");

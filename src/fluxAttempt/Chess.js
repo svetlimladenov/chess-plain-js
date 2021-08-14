@@ -1,6 +1,8 @@
 /* eslint-disable class-methods-use-this */
-import Button from "./Button.js";
 import store from "./store.js";
+import Button from "./Button.js";
+import createFigure from "./figures-creator.js";
+import createPlay from "./plays-creator.js";
 
 class Chess {
     constructor(props) {
@@ -9,7 +11,7 @@ class Chess {
 
     render() {
         const board = this.props.board.reduce((prev, cur, rowIdx) => {
-            const row = cur.reduce((acc, cur, colIdx) => {
+            const row = cur.reduce((acc, curCol, colIdx) => {
                 const cell = document.createElement("div");
                 cell.className = "box";
 
@@ -27,9 +29,14 @@ class Chess {
                     cell.classList.add(secondaryColor);
                 }
 
-                if (cur) {
-                    // if there is a figure or play
-                    cell.appendChild(cur.render());
+                if (curCol) {
+                    if (curCol === "PLAY") {
+                        const play = createPlay(rowIdx, colIdx);
+                        cell.appendChild(play.render());
+                    } else {
+                        const figure = createFigure(rowIdx, colIdx, curCol);
+                        cell.appendChild(figure.render());
+                    }
                 }
 
                 acc.appendChild(cell);
