@@ -57,6 +57,10 @@ class Chess {
         wrapper.appendChild(startButton);
         wrapper.appendChild(restartButton);
 
+        // added it just to show how we are what we typed, because of the DOM re-render
+        const textArea = document.createElement("textarea");
+        wrapper.appendChild(textArea);
+
         return wrapper;
     }
 
