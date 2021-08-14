@@ -5,7 +5,7 @@ class Pawn {
         this.x = x;
         this.y = y;
         this.image = "../../public/images/figures/pawn-black.png";
-        this.name = "pawn";
+        this.name = "PAWN_BLACK";
     }
 
     showPlayablePositions() {
@@ -27,6 +27,13 @@ class Pawn {
 
         store.dispatch({
             type: "SHOW_PLAYABLE_POSITIONS",
+            figureInPlay: {
+                name: this.name,
+                position: {
+                    x: this.x,
+                    y: this.y
+                }
+            },
             playPositions
         });
     }

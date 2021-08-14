@@ -6,7 +6,6 @@ class Play {
         this.y = y;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     playClicked() {
         store.dispatch({
             type: "PLAY_CLICKED",

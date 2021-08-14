@@ -6,7 +6,8 @@ const chessReducer = (state = {}, action) => {
     switch (action.type) {
         case "INIT": {
             return {
-                board: Array(8).fill(Array(8).fill(null))
+                board: Array(8).fill(Array(8).fill(null)),
+                figureInPlay: null
             };
         }
         case "GAME_START": {
@@ -19,21 +20,23 @@ const chessReducer = (state = {}, action) => {
         }
         case "GAME_RESET": {
             return updateObject(state, {
-                board: Array(8).fill(Array(8).fill(null))
+                board: Array(8).fill(Array(8).fill(null)),
+                figureInPlay: null
             });
         }
         case "SHOW_PLAYABLE_POSITIONS": {
             const boardWithPlays = state.board.map((row, rowIdx) => {
                 return row.map((col, colIdx) => {
+                    // reset the old plays
                     if (col === "PLAY") {
                         return null;
                     }
 
-                    const a = action.playPositions.find(
+                    const currentPlay = action.playPositions.find(
                         (pos) => pos.x === colIdx && pos.y === rowIdx
                     );
 
-                    if (a) {
+                    if (currentPlay) {
                         return "PLAY";
                     }
 
@@ -41,11 +44,37 @@ const chessReducer = (state = {}, action) => {
                 });
             });
 
-            return updateObject(state, { board: boardWithPlays });
+            return updateObject(state, {
+                board: boardWithPlays,
+                figureInPlay: action.figureInPlay
+            });
         }
         case "PLAY_CLICKED": {
-            console.log("play clicked action");
-            return state;
+            const figurePosition = state.figureInPlay.position;
+            const newPosition = action.position;
+
+            const moved = state.board.map((row, rowIdx) => {
+                return row.map((col, colIdx) => {
+                    if (
+                        rowIdx === figurePosition.y &&
+                        colIdx === figurePosition.x
+                    ) {
+                        return null;
+                    }
+
+                    if (rowIdx === newPosition.y && colIdx === newPosition.x) {
+                        return state.figureInPlay.name;
+                    }
+
+                    if (col === "PLAY") {
+                        return null;
+                    }
+
+                    return col;
+                });
+            });
+            console.log(moved);
+            return updateObject(state, { board: moved });
         }
         default: {
             return state;
