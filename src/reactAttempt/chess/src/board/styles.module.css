@@ -1,0 +1,56 @@
+.black {
+  background-color: rgb(117, 58, 58);
+}
+
+.white {
+  background-color: wheat;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+}
+
+.row {
+  display: flex;
+}
+
+.figure-wrapper {
+  margin: 10px 10px;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.figure {
+  cursor: grab;
+  width: 75px;
+  height: 75px;
+}
+
+.play {
+  margin: 35px 35px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: cadetblue;
+}
+
+.attack-play {
+  position: relative;
+  top: -94px;
+  left: 6px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: cadetblue;
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+}
+
+.x-numbers {
+  font-size: medium;
+}
+
+.files-prefix-box {
+  margin-left: 10px;
+}
