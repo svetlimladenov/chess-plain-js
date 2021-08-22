@@ -1,15 +1,15 @@
-/node_modules
-/src/reactAttempt/chess/node_modules
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-/src/reactAttempt/chess//.pnp
+# dependencies
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-/src/reactAttempt/chess/coverage
+/coverage
 
 # production
-/src/reactAttempt/chess/build
-
+/build
 
 # misc
 .DS_Store
