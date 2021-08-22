@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
+import Box from "../box/Box";
 
 class Chess extends React.Component {
   constructor() {
@@ -17,10 +18,8 @@ class Chess extends React.Component {
     let isWhite = true;
     return this.state.board.map((row, rowIdx) => {
       const boxes = row.map((col, colIdx) => {
-        const boxClasses = [styles.box];
-        isWhite ? boxClasses.push(styles.white) : boxClasses.push(styles.black);
         isWhite = !isWhite;
-        return <div key={colIdx} className={boxClasses.join(" ")}></div>;
+        return <Box key={colIdx} isWhite={isWhite} />;
       });
       isWhite = !isWhite;
       return (
