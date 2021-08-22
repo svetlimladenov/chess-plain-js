@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import store from "./store.js";
 import Button from "./Button.js";
@@ -10,25 +11,13 @@ class Chess {
     }
 
     render() {
+        let isWhite = true;
         const board = this.props.board.reduce((prev, cur, rowIdx) => {
             const row = cur.reduce((acc, curCol, colIdx) => {
                 const cell = document.createElement("div");
                 cell.className = "box";
-
-                let defaultColor = "white";
-                let secondaryColor = "black";
-
-                if (rowIdx % 2 !== 0) {
-                    defaultColor = "black";
-                    secondaryColor = "white";
-                }
-
-                if (colIdx % 2 === 0) {
-                    cell.classList.add(defaultColor);
-                } else {
-                    cell.classList.add(secondaryColor);
-                }
-
+                isWhite ? cell.classList.add("white") : cell.classList.add("black");
+                isWhite = !isWhite;
                 if (curCol) {
                     if (curCol === "PLAY") {
                         const play = createPlay(rowIdx, colIdx);
@@ -42,6 +31,7 @@ class Chess {
                 acc.appendChild(cell);
                 return acc;
             }, document.createElement("div"));
+            isWhite = !isWhite;
 
             row.className = "row";
             prev.appendChild(row);
