@@ -4,8 +4,8 @@ class Controls extends Component {
   render() {
     return (
       <Fragment>
-        <button>Start</button>
-        <button>Reset</button>
+        <button onClick={this.props.handleStart}>Start</button>
+        <button onClick={this.props.handleReset}>Reset</button>
       </Fragment>
     );
   }

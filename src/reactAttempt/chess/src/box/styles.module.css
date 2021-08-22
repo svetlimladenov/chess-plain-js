@@ -1,0 +1,12 @@
+.black {
+  background-color: rgb(117, 58, 58);
+}
+
+.white {
+  background-color: wheat;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+}

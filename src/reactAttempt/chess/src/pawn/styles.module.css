@@ -1,0 +1,11 @@
+.figure-wrapper {
+  margin: 10px 10px;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.figure {
+  cursor: grab;
+  width: 75px;
+  height: 75px;
+}
