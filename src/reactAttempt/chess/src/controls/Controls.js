@@ -1,12 +1,17 @@
 import React, { Component, Fragment } from "react";
+import styles from "./styles.module.css";
 
 class Controls extends Component {
   render() {
     return (
-      <Fragment>
-        <button onClick={this.props.handleStart}>Start</button>
-        <button onClick={this.props.handleReset}>Reset</button>
-      </Fragment>
+      <div className={styles.wrapper}>
+        <button onClick={this.props.handleStart} className={styles.startBtn}>
+          Start
+        </button>
+        <button onClick={this.props.handleReset} className={styles.resetBtn}>
+          Reset
+        </button>
+      </div>
     );
   }
 }
