@@ -36,17 +36,14 @@ class Chess extends React.Component {
 
     const renderedBoard = [];
     for (let rowIdx = 0; rowIdx < 8; rowIdx += 1) {
-      const rowBoxes = [];
+      const boxes = [];
       for (let colIdx = 0; colIdx < 8; colIdx += 1) {
-        rowBoxes.push(
-          <Box key={index} figure={board[index]} isWhite={isWhite} />
-        );
+        boxes.push(<Box key={index} figure={board[index]} isWhite={isWhite} />);
         index += 1;
         isWhite = !isWhite;
       }
       isWhite = !isWhite;
-      const row = <div className={styles.row}>{rowBoxes}</div>;
-      renderedBoard.push(row);
+      renderedBoard.push(<div className={styles.row}>{boxes}</div>);
     }
     return renderedBoard;
   }
@@ -78,7 +75,7 @@ class Chess extends React.Component {
 
   handleReset() {
     this.setState({
-      board: Array(8).fill(null),
+      board: Array(64).fill(null),
       isStarted: false,
       message: "Click start to start new game"
     });

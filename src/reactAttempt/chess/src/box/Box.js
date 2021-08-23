@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
-import Pawn from "../pawn/Pawn";
+import Figure from "../figure/Figure";
 
 class Box extends React.Component {
   render() {
@@ -8,7 +8,7 @@ class Box extends React.Component {
     const boxColor = isWhite ? styles.white : styles.black;
     let figureElement = null;
     if (figure === "PAWN_BLACK") {
-      figureElement = <Pawn />;
+      figureElement = <Figure />;
     }
     return (
       <div className={[styles.box, boxColor].join(" ")}>{figureElement}</div>
