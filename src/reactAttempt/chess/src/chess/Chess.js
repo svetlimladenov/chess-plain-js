@@ -3,13 +3,14 @@ import styles from "./styles.module.css";
 import Controls from "../controls/Controls";
 import Box from "../box/Box";
 import figuresData from "../figure/figuresData";
+import { generateStartBoard, generateEmptyBoard } from "./chess-services";
 
 class Chess extends React.Component {
   constructor() {
     super();
     this.state = {
       isStarted: false,
-      board: Array(64).fill(null),
+      board: generateEmptyBoard(),
       availablePlayPositions: [],
       clickedFigure: null,
       message: "Click start to start new game"
@@ -111,29 +112,16 @@ class Chess extends React.Component {
 
   handleStart() {
     this.setState((state) => {
-      const { board, isStarted } = state;
-      if (isStarted) {
+      if (state.isStarted) {
         return {
           message:
             "Game already started, click reset if you want to start new game"
         };
       }
 
-      const updatedBoard = board.map((box, idx) => {
-        if (idx >= 8 && idx <= 15) {
-          return figuresData.PAWN_BLACK.name;
-        }
-
-        if (idx === 0 || idx === 7) {
-          return figuresData.ROOK_BLACK.name;
-        }
-
-        return box;
-      });
-
       return {
         isStarted: true,
-        board: updatedBoard,
+        board: generateStartBoard(),
         message: "Game Started"
       };
     });
@@ -141,7 +129,7 @@ class Chess extends React.Component {
 
   handleReset() {
     this.setState({
-      board: Array(64).fill(null),
+      board: generateEmptyBoard(),
       isStarted: false,
       message: "Click start to start new game"
     });
