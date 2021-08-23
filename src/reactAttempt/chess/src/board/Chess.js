@@ -8,7 +8,8 @@ class Chess extends React.Component {
     super();
     this.state = {
       isStarted: false,
-      board: Array(8).fill(Array(8).fill(null))
+      board: Array(64).fill(null),
+      message: "Click start to start new game"
     };
 
     this.handleStart = this.handleStart.bind(this);
@@ -23,54 +24,63 @@ class Chess extends React.Component {
           handleStart={this.handleStart}
           handleReset={this.handleReset}
         />
+        <h2>{this.state.message}</h2>
       </div>
     );
   }
 
   renderBoard() {
+    const { board } = this.state;
     let isWhite = true;
-    return this.state.board.map((row, rowIdx) => {
-      const boxes = row.map((col, colIdx) => {
+    let index = 0;
+
+    const renderedBoard = [];
+    for (let rowIdx = 0; rowIdx < 8; rowIdx += 1) {
+      const rowBoxes = [];
+      for (let colIdx = 0; colIdx < 8; colIdx += 1) {
+        rowBoxes.push(
+          <Box key={index} figure={board[index]} isWhite={isWhite} />
+        );
+        index += 1;
         isWhite = !isWhite;
-        return <Box key={colIdx} figure={col} isWhite={isWhite} />;
-      });
+      }
       isWhite = !isWhite;
-      return (
-        <div key={rowIdx} className={styles.row}>
-          {boxes}
-        </div>
-      );
-    });
+      const row = <div className={styles.row}>{rowBoxes}</div>;
+      renderedBoard.push(row);
+    }
+    return renderedBoard;
   }
 
   handleStart() {
     this.setState((state) => {
       const { board, isStarted } = state;
       if (isStarted) {
-        alert("Game already started");
-        return state;
+        return {
+          message:
+            "Game already started, click reset if you want to start new game"
+        };
       }
 
-      const startedBoard = board.map((row, rowIdx) => {
-        return row.map((col, colIdx) => {
-          if (rowIdx === 1) {
-            return "PAWN_BLACK";
-          }
-          return col;
-        });
+      const startedBoard = board.map((box, idx) => {
+        if (idx >= 8 && idx <= 15) {
+          return "PAWN_BLACK";
+        }
+        return box;
       });
 
       return {
         isStarted: true,
-        board: startedBoard
+        board: startedBoard,
+        message: "Game Started"
       };
     });
   }
 
   handleReset() {
     this.setState({
-      board: Array(8).fill(Array(8).fill(null)),
-      isStarted: false
+      board: Array(8).fill(null),
+      isStarted: false,
+      message: "Click start to start new game"
     });
   }
 }
