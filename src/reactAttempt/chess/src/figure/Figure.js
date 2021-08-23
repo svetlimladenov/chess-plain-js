@@ -1,12 +1,14 @@
 import React from "react";
 import styles from "./styles.module.css";
-import pawn from "./pawn-black.png";
+import figuresData from "./figuresData";
 
 class Figure extends React.Component {
   render() {
+    const { name, handleFigureClick } = this.props;
+    const figure = figuresData[name];
     return (
-      <div className={styles["figure-wrapper"]}>
-        <img src={pawn} alt="pawn" className={styles.figure} />
+      <div onClick={handleFigureClick} className={styles["figure-wrapper"]}>
+        <img src={figure.image} alt={figure.name} className={styles.figure} />
       </div>
     );
   }
