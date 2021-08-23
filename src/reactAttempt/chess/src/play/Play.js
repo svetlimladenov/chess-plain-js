@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./styles.module.css";
 
-class Play extends React.Component {
+class PlayBox extends React.Component {
   render() {
     return (
       <div onClick={this.props.handlePlayClick} className={styles.play}></div>
@@ -9,4 +9,4 @@ class Play extends React.Component {
   }
 }
 
-export default Play;
+export default PlayBox;

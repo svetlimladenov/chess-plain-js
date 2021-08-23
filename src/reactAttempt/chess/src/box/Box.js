@@ -1,19 +1,20 @@
 import React from "react";
 import styles from "./styles.module.css";
 import Figure from "../figure/Figure";
-import Play from "../play/Play";
+import PlayBox from "../play/Play";
 
 class Box extends React.Component {
   render() {
-    const { isWhite, boxItem, handleFigureClick, handlePlayClick } = this.props;
+    const { isWhite, figure, play, handleFigureClick, handlePlayClick } =
+      this.props;
     const boxColor = isWhite ? styles.white : styles.black;
     let childElement = null;
 
-    if (boxItem === "PLAY") {
-      childElement = <Play handlePlayClick={handlePlayClick} />;
-    } else if (boxItem) {
+    if (play) {
+      childElement = <PlayBox handlePlayClick={handlePlayClick} />;
+    } else if (figure) {
       childElement = (
-        <Figure name={boxItem} handleFigureClick={handleFigureClick} />
+        <Figure name={figure} handleFigureClick={handleFigureClick} />
       );
     }
     return (

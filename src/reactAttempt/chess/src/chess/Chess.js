@@ -10,6 +10,8 @@ class Chess extends React.Component {
     this.state = {
       isStarted: false,
       board: Array(64).fill(null),
+      availablePlayPositions: [],
+      clickedFigure: null,
       message: "Click start to start new game"
     };
 
@@ -33,7 +35,7 @@ class Chess extends React.Component {
   }
 
   renderBoard() {
-    const { board } = this.state;
+    const { board, availablePlayPositions } = this.state;
     let isWhite = true;
     let index = 0;
 
@@ -41,10 +43,13 @@ class Chess extends React.Component {
     for (let rowIdx = 0; rowIdx < 8; rowIdx += 1) {
       const boxes = [];
       for (let colIdx = 0; colIdx < 8; colIdx += 1) {
+        let currentPlay = getCurrentPlay(availablePlayPositions, index);
+
         boxes.push(
           <Box
             key={index}
-            boxItem={board[index]}
+            figure={board[index]}
+            play={currentPlay}
             isWhite={isWhite}
             handleFigureClick={this.handleFigureClick.bind(this, index)}
             handlePlayClick={this.handlePlayClick.bind(this, index)}
@@ -66,22 +71,42 @@ class Chess extends React.Component {
   handleFigureClick(index) {
     this.setState((state) => {
       const figure = state.board[index];
-      const updatedBoard = state.board.map((box, idx) => {
+      const availablePlayPositions = state.board.reduce((acc, curr, idx) => {
         if (figure === figuresData.PAWN_BLACK.name && index + 8 === idx) {
-          return "PLAY";
+          acc.push(idx);
+        }
+
+        return acc;
+      }, []);
+
+      return {
+        clickedFigure: {
+          name: figure,
+          index: index
+        },
+        availablePlayPositions: availablePlayPositions
+      };
+    });
+  }
+
+  handlePlayClick(index) {
+    this.setState((state) => {
+      const updatedBoard = state.board.map((box, idx) => {
+        if (idx === state.clickedFigure.index) {
+          return null;
+        }
+        if (idx === index) {
+          return state.clickedFigure.name;
         }
 
         return box;
       });
 
       return {
-        board: updatedBoard
+        board: updatedBoard,
+        availablePlayPositions: []
       };
     });
-  }
-
-  handlePlayClick(index) {
-    console.log(index);
   }
 
   handleStart() {
@@ -121,6 +146,15 @@ class Chess extends React.Component {
       message: "Click start to start new game"
     });
   }
+}
+
+function getCurrentPlay(availablePlayPositions, position) {
+  const currentPlayIndex = availablePlayPositions.indexOf(position);
+  let currentPlay = null;
+  if (currentPlayIndex >= 0) {
+    currentPlay = availablePlayPositions[currentPlayIndex];
+  }
+  return currentPlay;
 }
 
 export default Chess;
